@@ -10,8 +10,18 @@ pipeline that does the image work up front so the site itself stays simple and f
 ```bash
 yarn install
 cp .env.example .env.local
+yarn seed:samples      # generate the placeholder originals the sample content refers to
+yarn ingest --local    # process them into public/images/
 yarn dev
 ```
+
+The repo ships with three synthetic sample photographs, two collections and one journal
+post, so the site runs end to end with no Cloudflare account and no photographs of your
+own. `originals/` and `public/images/` are gitignored — binaries do not belong in git — so
+`yarn seed:samples` regenerates the inputs, and ingest produces the derivatives from them.
+
+When you add your own work, delete `originals/*.jpg` and the sample entries in
+`content/photos.json`.
 
 ## Scripts
 
@@ -27,6 +37,7 @@ yarn dev
 | `yarn test:watch`   | Vitest in watch mode                                      |
 | `yarn verify`       | format + lint + typecheck + test — the same gates CI runs |
 | `yarn ingest`       | Process new photos (see below)                            |
+| `yarn seed:samples` | Regenerate the placeholder sample originals               |
 
 ## How images work, and why
 

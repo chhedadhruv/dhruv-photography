@@ -56,6 +56,18 @@ const eslintConfig = defineConfig([
     },
   },
 
+  // This project deliberately does not use `next/image`. The ingest pipeline already
+  // produced AVIF and WebP derivatives at fixed widths, so next/image would re-optimize
+  // optimized files, require remotePatterns for R2, and bill per transform for work
+  // already done locally. Turned off as a project-level decision, in config and explained
+  // -- not silenced case by case with inline comments, which this repo forbids.
+  {
+    files: ["src/components/PhotoImage.tsx"],
+    rules: {
+      "@next/next/no-img-element": "off",
+    },
+  },
+
   // Must come last. Turns off every ESLint rule that overlaps with Prettier, so the two
   // tools cannot disagree about formatting -- ESLint judges code, Prettier owns layout.
   eslintConfigPrettier,
