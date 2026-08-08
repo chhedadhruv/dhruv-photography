@@ -38,6 +38,7 @@ When you add your own work, delete `originals/*.jpg` and the sample entries in
 | `yarn verify`       | format + lint + typecheck + test — the same gates CI runs |
 | `yarn ingest`       | Process new photos (see below)                            |
 | `yarn seed:samples` | Regenerate the placeholder sample originals               |
+| `yarn icons`        | Regenerate the favicon, touch icon and social card        |
 
 ## How images work, and why
 

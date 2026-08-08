@@ -18,7 +18,8 @@
     "verify": "yarn format:check && yarn lint && yarn typecheck && yarn test",
     "ingest": "tsx pipeline/ingest.ts",
     "seed:samples": "tsx pipeline/seed-samples.ts",
-    "prepare": "husky"
+    "prepare": "husky",
+    "icons": "tsx pipeline/make-icons.ts"
   },
   "lint-staged": {
     "*.{ts,tsx,mts}": [
