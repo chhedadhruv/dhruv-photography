@@ -43,6 +43,38 @@ function includeDrafts(): boolean {
   return process.env.NODE_ENV !== "production";
 }
 
+/**
+ * Splits a markdown file into validated frontmatter and body.
+ *
+ * Pure and exported so the parsing rules can be tested against strings rather than
+ * requiring fixture files on disk.
+ */
+export function parsePostSource(
+  raw: string,
+  source: string,
+): { frontmatter: JournalFrontmatter; body: string } {
+  // gray-matter types `data` as `any`. Annotating the destructure narrows it to `unknown`
+  // at this one boundary, and Zod turns it into a real type on the next line -- "parse it,
+  // don't cast it" in practice.
+  const { data, content }: { data: unknown; content: string } = matter(raw);
+
+  return {
+    frontmatter: parseContent(journalFrontmatterSchema, data, source),
+    body: content,
+  };
+}
+
+/** Newest first, ties broken on slug so ordering does not drift between builds. */
+export function sortPosts(
+  posts: readonly JournalPostMeta[],
+): readonly JournalPostMeta[] {
+  return [...posts].sort(
+    (a, b) =>
+      Date.parse(b.publishedAt) - Date.parse(a.publishedAt) ||
+      a.slug.localeCompare(b.slug),
+  );
+}
+
 function readPostFile(slug: string): {
   frontmatter: JournalFrontmatter;
   body: string;
@@ -54,17 +86,7 @@ function readPostFile(slug: string): {
     throw new ContentValidationError(source, "File does not exist.");
   }
 
-  // gray-matter types `data` as `any`. Annotating the destructure narrows it to `unknown`
-  // at this one boundary, and Zod turns it into a real type on the next line -- "parse it,
-  // don't cast it" in practice.
-  const { data, content }: { data: unknown; content: string } = matter(
-    fs.readFileSync(filePath, "utf8"),
-  );
-
-  return {
-    frontmatter: parseContent(journalFrontmatterSchema, data, source),
-    body: content,
-  };
+  return parsePostSource(fs.readFileSync(filePath, "utf8"), source);
 }
 
 /** Slugs of every markdown file present, drafts included. */
@@ -92,16 +114,10 @@ export function getAllPosts(): readonly JournalPostMeta[] {
     ...readPostFile(slug).frontmatter,
   }));
 
-  return posts
-    .filter((post) => includeDrafts() || !post.draft)
-    .sort(
-      (a, b) =>
-        Date.parse(b.publishedAt) - Date.parse(a.publishedAt) ||
-        a.slug.localeCompare(b.slug),
-    );
+  return sortPosts(posts.filter((post) => includeDrafts() || !post.draft));
 }
 
-async function renderMarkdown(markdown: string): Promise<string> {
+export async function renderMarkdown(markdown: string): Promise<string> {
   const file = await unified()
     .use(remarkParse)
     .use(remarkGfm)

@@ -61,8 +61,10 @@ const eslintConfig = defineConfig([
   // optimized files, require remotePatterns for R2, and bill per transform for work
   // already done locally. Turned off as a project-level decision, in config and explained
   // -- not silenced case by case with inline comments, which this repo forbids.
+  // Also off in tests, where a bare `<img>` is a fixture rather than shipped markup, so
+  // the rule's advice about LCP and bandwidth does not apply to it.
   {
-    files: ["src/components/PhotoImage.tsx"],
+    files: ["src/components/PhotoImage.tsx", "src/**/*.test.tsx"],
     rules: {
       "@next/next/no-img-element": "off",
     },

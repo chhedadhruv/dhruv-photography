@@ -160,6 +160,27 @@ than by convention:
 Enforced locally by husky: `pre-commit` runs lint-staged + typecheck + tests, `pre-push`
 runs the full `yarn verify` and a build. CI re-runs all of it on every PR.
 
+### Tests
+
+144 tests across two Vitest projects — `node` for content and pipeline logic, `jsdom` for
+components. They target the places where a mistake would otherwise be invisible:
+
+- **Content rules** — that missing alt text, thin captions and broken collection
+  references actually fail the build.
+- **Ordering determinism** — same-second photos and same-day posts must not swap places
+  between builds.
+- **The two library traps** — EXIF timestamps keeping their wall-clock time, and
+  `sharp.metadata()` reporting pre-rotation dimensions. A test decodes a real derivative
+  to check the recorded numbers describe the bytes actually served.
+- **Structured data** — required fields, 1-based breadcrumb positions, absolute URLs, and
+  omitted-rather-than-empty values. Google discards malformed JSON-LD silently.
+- **Layout shift and loading** — intrinsic dimensions present, exactly one eager image.
+- **XSS in JSON-LD** — a caption containing `</script>` must not close the tag.
+
+The suite was checked by breaking things on purpose: removing the Escape handler and the
+angle-bracket escaping each produced failures. A green test that cannot go red is
+decoration.
+
 ## Setup still required
 
 | Item                             | Where                                                |
