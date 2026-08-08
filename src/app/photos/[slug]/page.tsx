@@ -4,13 +4,21 @@ import { notFound } from "next/navigation";
 
 import { ExifPanel } from "@/components/ExifPanel";
 import { FullFrame } from "@/components/FullFrame";
+import { JsonLd } from "@/components/JsonLd";
 import { PhotoImage } from "@/components/PhotoImage";
 import { RebateRail } from "@/components/RebateStrip";
+import {
+  breadcrumbJsonLd,
+  graph,
+  imageObjectJsonLd,
+  personJsonLd,
+} from "@/lib/jsonld";
 import {
   getAllPhotos,
   getCollectionBySlug,
   getPhotoBySlug,
 } from "@/lib/photos";
+import { absoluteImageUrl } from "@/lib/seo";
 import { siteConfig } from "@/site.config";
 
 /**
@@ -47,6 +55,18 @@ export async function generateMetadata(
       title,
       description: photo.caption,
       type: "article",
+      images: [
+        {
+          url: absoluteImageUrl(photo),
+          width: photo.width,
+          height: photo.height,
+          alt: photo.alt,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      images: [absoluteImageUrl(photo)],
     },
   };
 }
@@ -65,6 +85,19 @@ export default async function PhotoPage(props: PageProps<"/photos/[slug]">) {
 
   return (
     <article className="mx-auto max-w-[100rem] px-6 pt-10 md:px-10 md:pt-16">
+      {/* The ImageObject is the whole point of giving each photo its own URL: it states
+          outright that this page is a photograph, who made it, and where it was taken. */}
+      <JsonLd
+        data={graph([
+          imageObjectJsonLd(photo),
+          personJsonLd(),
+          breadcrumbJsonLd([
+            { name: "Frames", path: "/" },
+            { name: photo.title, path: `/photos/${photo.slug}` },
+          ]),
+        ])}
+      />
+
       <div className="flex gap-6">
         <RebateRail photo={photo} />
 

@@ -1,10 +1,34 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 
+import { JsonLd } from "@/components/JsonLd";
 import { PhotoGrid } from "@/components/PhotoGrid";
 import { PhotoImage } from "@/components/PhotoImage";
 import { RebateStrip } from "@/components/RebateStrip";
+import { graph, personJsonLd, webSiteJsonLd } from "@/lib/jsonld";
 import { getHomeFeedPhotos } from "@/lib/photos";
+import { absoluteImageUrl } from "@/lib/seo";
 import { siteConfig } from "@/site.config";
+
+export function generateMetadata(): Metadata {
+  const lead = getHomeFeedPhotos()[0];
+
+  return {
+    alternates: { canonical: "/" },
+    openGraph: {
+      title: `${siteConfig.shortName} — ${siteConfig.tagline}`,
+      description: siteConfig.description,
+      type: "website",
+      url: siteConfig.url,
+      ...(lead === undefined ? {} : { images: [absoluteImageUrl(lead)] }),
+    },
+    twitter: {
+      // A photography site's card should be the photograph, not a cropped thumbnail.
+      card: "summary_large_image",
+      ...(lead === undefined ? {} : { images: [absoluteImageUrl(lead)] }),
+    },
+  };
+}
 
 /**
  * The home page opens with a single photograph at full width rather than a headline over
@@ -20,6 +44,10 @@ export default function HomePage() {
 
   return (
     <div className="mx-auto max-w-[100rem] px-6 pt-10 md:px-10 md:pt-16">
+      {/* Declares the site and its author once, with stable @ids the other pages
+          reference, so search engines treat every page as the work of one person. */}
+      <JsonLd data={graph([webSiteJsonLd(), personJsonLd()])} />
+
       {lead === undefined ? (
         <p className="rebate py-32 text-center normal-case">
           No photographs published yet.

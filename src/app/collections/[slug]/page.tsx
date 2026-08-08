@@ -1,12 +1,21 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
+import { JsonLd } from "@/components/JsonLd";
 import { PhotoGrid } from "@/components/PhotoGrid";
+import {
+  breadcrumbJsonLd,
+  graph,
+  imageGalleryJsonLd,
+  personJsonLd,
+} from "@/lib/jsonld";
 import {
   getAllCollections,
   getCollectionBySlug,
+  getCoverPhoto,
   getPhotosInCollection,
 } from "@/lib/photos";
+import { absoluteImageUrl } from "@/lib/seo";
 
 export function generateStaticParams(): { slug: string }[] {
   return getAllCollections().map((collection) => ({ slug: collection.slug }));
@@ -22,16 +31,27 @@ export async function generateMetadata(
     return {};
   }
 
+  const cover = absoluteImageUrl(getCoverPhoto(collection));
+
+  // Location goes in the title because collections are the site's main surface for
+  // place-based search.
+  const title =
+    collection.location === null
+      ? collection.title
+      : `${collection.title} — ${collection.location}`;
+
   return {
-    title: collection.title,
+    title,
     // The schema enforces a minimum length on this precisely so it works here.
     description: collection.description,
     alternates: { canonical: `/collections/${collection.slug}` },
     openGraph: {
-      title: collection.title,
+      title,
       description: collection.description,
       type: "website",
+      images: [cover],
     },
+    twitter: { card: "summary_large_image", images: [cover] },
   };
 }
 
@@ -49,6 +69,22 @@ export default async function CollectionPage(
 
   return (
     <div className="mx-auto max-w-[100rem] px-6 pt-10 md:px-10 md:pt-16">
+      {/* The gallery node carries every frame in the collection, so one crawl of this
+          page describes all of them rather than only the cover. */}
+      <JsonLd
+        data={graph([
+          imageGalleryJsonLd(collection, photos),
+          personJsonLd(),
+          breadcrumbJsonLd([
+            { name: "Collections", path: "/collections" },
+            {
+              name: collection.title,
+              path: `/collections/${collection.slug}`,
+            },
+          ]),
+        ])}
+      />
+
       <header className="max-w-3xl">
         <h1 className="font-display text-paper text-4xl leading-tight font-light md:text-6xl">
           {collection.title}

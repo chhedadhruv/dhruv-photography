@@ -120,6 +120,32 @@ can't: slug uniqueness, that every photo's collection references resolve, that e
 photo exists, and that no collection is empty. Without this, a typo'd collection slug
 wouldn't error — the photo would just silently vanish from the page it belonged on.
 
+## SEO
+
+The site targets four things, and each has a specific mechanism behind it rather than a
+generic "we added meta tags":
+
+| Goal                                  | Mechanism                                                                                                                                                                    |
+| ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Ranking on "Dhruv Chheda photography" | `Person` structured data with a stable `@id` referenced from every page, and `sameAs` linking Instagram, GitHub and the main site. The About page title leads with the name. |
+| Shoot locations                       | `contentLocation` on every photo, location in photo and collection page titles, and location text in the rebate strip and shooting notes.                                    |
+| Google Images                         | A per-photo URL, `ImageObject` structured data, required descriptive `alt`, and an **image sitemap** — `sitemap.xml` lists each photograph under its page.                   |
+| Journal topics                        | `Article` structured data, and markdown rendered to HTML at build time so the prose is in the response body.                                                                 |
+
+Everything prerenders. `yarn build` should show every route as `○` or `●`; a `ƒ` means
+something reached for request-time data and both speed and crawlability suffered.
+
+Two failure modes worth knowing, because neither has a visible symptom:
+
+- **Malformed JSON-LD is discarded silently** by Google — no error, no warning, no rich
+  result. That is why `src/lib/jsonld.ts` is typed and covered by tests rather than
+  hand-written per page.
+- **Relative URLs in structured data are ignored**, not rejected. `src/lib/seo.ts` makes
+  every URL absolute, and the tests assert it.
+
+`NEXT_PUBLIC_SITE_URL` must be the real production origin on Vercel. If it is left as
+localhost, every canonical, sitemap entry and structured-data URL points at your laptop.
+
 ## Quality gates
 
 Strict TypeScript (`strict` plus `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`
