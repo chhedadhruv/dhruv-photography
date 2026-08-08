@@ -53,6 +53,37 @@ prevents layout shift.
 Before R2 exists, `yarn ingest --local` writes derivatives to `public/images/` instead, so
 the whole site runs end-to-end with no credentials.
 
+### Adding photos
+
+```bash
+cp ~/exports/*.jpg originals/
+yarn ingest              # or: yarn ingest --local
+```
+
+Then open `content/photos.json` and fill in `alt`, `caption`, `location`, and
+`collections` for each new photo. Ingest tells you exactly which ones are waiting.
+
+| Flag      | Effect                                                           |
+| --------- | ---------------------------------------------------------------- |
+| `--local` | Write derivatives to `public/images/` instead of uploading to R2 |
+| `--force` | Re-encode photos that were already ingested                      |
+
+**Re-running is safe.** Already-ingested files are skipped, and `--force` re-derives
+everything technical while leaving your `title`, `alt`, `caption`, `location`,
+`collections` and `featured` untouched. Losing a caption you spent ten minutes on because
+you re-ran a command would be unforgivable, so the pipeline treats your writing as
+authoritative and its own output as disposable.
+
+Two details worth knowing, both discovered by testing rather than assumption:
+
+- **EXIF timestamps have no timezone.** exifr's default is to read them in the _ingesting
+  machine's_ timezone and convert to UTC, which turns a 06:12 dawn frame into 00:42Z. The
+  pipeline reads the raw string and preserves the camera's wall-clock time instead.
+- **`sharp.metadata()` reports stored dimensions, not displayed ones.** A portrait frame
+  shot on a rotated body reports landscape dimensions plus an orientation tag, even on a
+  pipeline with `.rotate()` applied. The pipeline swaps them explicitly, otherwise every
+  rotated photo would reserve the wrong space and shift the page on load.
+
 ## Content model
 
 Content lives in `content/`, outside `src/`, because it is data rather than code:

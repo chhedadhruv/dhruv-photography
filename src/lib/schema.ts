@@ -131,6 +131,21 @@ export const journalFrontmatterSchema = z.object({
 export const photosFileSchema = z.array(photoSchema);
 export const collectionsFileSchema = z.array(collectionSchema);
 
+/**
+ * The same photo, with the editorial minimums relaxed.
+ *
+ * The ingest pipeline reads `photos.json` back to carry your captions forward across runs,
+ * and at that point the file legitimately contains freshly ingested photos whose alt and
+ * caption are still empty. The strict schema is the gate the *site* has to pass; the
+ * pipeline needs to be able to read its own work in progress.
+ */
+export const draftPhotoSchema = photoSchema.extend({
+  alt: z.string(),
+  caption: z.string(),
+});
+
+export const draftPhotosFileSchema = z.array(draftPhotoSchema);
+
 export type Exif = z.infer<typeof exifSchema>;
 export type Photo = z.infer<typeof photoSchema>;
 export type Collection = z.infer<typeof collectionSchema>;

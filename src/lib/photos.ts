@@ -6,6 +6,7 @@ import {
   ContentValidationError,
   collectionsFileSchema,
   parseContent,
+  photoSchema,
   photosFileSchema,
   type Collection,
   type Photo,
@@ -105,6 +106,32 @@ function assertReferentialIntegrity(
 }
 
 /**
+ * Parses `photos.json` one entry at a time so failures name the photo, not an array index.
+ *
+ * `[7].caption` tells you nothing when you are looking at a 60-entry generated file. Since
+ * every entry that reaches here has already come out of the pipeline with a slug, that
+ * slug is the label worth putting in the error.
+ */
+function parsePhotosFile(data: unknown): readonly Photo[] {
+  if (!Array.isArray(data)) {
+    return parseContent(photosFileSchema, data, "content/photos.json");
+  }
+
+  return data.map((entry: unknown, index) => {
+    const label =
+      isRecord(entry) && typeof entry["slug"] === "string"
+        ? `photo "${entry["slug"]}"`
+        : `photo #${String(index)}`;
+
+    return parseContent(photoSchema, entry, `content/photos.json (${label})`);
+  });
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
+/**
  * Newest first, with undated photos last.
  *
  * Ties break on slug so ordering is deterministic -- otherwise two photos from the same
@@ -163,11 +190,7 @@ function loadLibrary(): Library {
   }
 
   cached = buildLibrary(
-    parseContent(
-      photosFileSchema,
-      readJson(path.join(CONTENT_DIR, "photos.json")),
-      "content/photos.json",
-    ),
+    parsePhotosFile(readJson(path.join(CONTENT_DIR, "photos.json"))),
     parseContent(
       collectionsFileSchema,
       readJson(path.join(CONTENT_DIR, "collections.json")),
