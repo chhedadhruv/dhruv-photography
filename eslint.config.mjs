@@ -1,6 +1,7 @@
 import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
+import eslintConfigPrettier from "eslint-config-prettier";
 import tseslint from "typescript-eslint";
 
 const eslintConfig = defineConfig([
@@ -54,6 +55,10 @@ const eslintConfig = defineConfig([
       "no-console": "off",
     },
   },
+
+  // Must come last. Turns off every ESLint rule that overlaps with Prettier, so the two
+  // tools cannot disagree about formatting -- ESLint judges code, Prettier owns layout.
+  eslintConfigPrettier,
 ]);
 
 export default eslintConfig;

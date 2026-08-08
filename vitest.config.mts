@@ -1,7 +1,9 @@
 import react from "@vitejs/plugin-react";
-import tsconfigPaths from "vite-tsconfig-paths";
 import { defineConfig } from "vitest/config";
 
+// `.mts` rather than `.ts` so Vite loads this as ESM natively -- as `.ts` it is treated as
+// CommonJS and warns about the ESM syntax below.
+//
 // Two projects rather than one, because the two kinds of code under test want genuinely
 // different environments: the content/pipeline logic is plain Node (it touches the
 // filesystem and image buffers), while components need a DOM. Running the Node tests in
@@ -13,7 +15,9 @@ export default defineConfig({
     passWithNoTests: true,
     projects: [
       {
-        plugins: [tsconfigPaths()],
+        // Resolves the `@/*` alias from tsconfig. Vite does this natively now, so the
+        // vite-tsconfig-paths plugin is not needed.
+        resolve: { tsconfigPaths: true },
         test: {
           name: "node",
           environment: "node",
@@ -21,7 +25,8 @@ export default defineConfig({
         },
       },
       {
-        plugins: [tsconfigPaths(), react()],
+        resolve: { tsconfigPaths: true },
+        plugins: [react()],
         test: {
           name: "dom",
           environment: "jsdom",
