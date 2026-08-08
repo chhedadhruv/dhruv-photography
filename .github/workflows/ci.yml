@@ -1,0 +1,45 @@
+name: ci
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches-ignore: [main]
+
+# A newer push to the same branch makes the in-flight run irrelevant.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: yarn
+
+      # --frozen-lockfile fails rather than silently resolving different versions than the
+      # ones committed, so CI tests exactly what the lockfile describes.
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      # Deliberately separate steps: a failure names itself in the GitHub UI instead of
+      # collapsing into one opaque "check failed".
+      - name: Lint
+        run: yarn lint
+
+      - name: Typecheck
+        run: yarn typecheck
+
+      - name: Test
+        run: yarn test
+
+      - name: Build
+        run: yarn build
+        env:
+          NEXT_PUBLIC_SITE_URL: https://photography.dhruvchheda.com
+          NEXT_PUBLIC_IMAGE_BASE_URL: https://images.example.com

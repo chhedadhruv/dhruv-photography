@@ -1,0 +1,3 @@
+# The same gates CI runs, so a red build is caught here rather than on GitHub.
+yarn verify
+yarn build

@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# dhruv-photography
 
-## Getting Started
+Photography portfolio for [photography.dhruvchheda.com](https://photography.dhruvchheda.com).
 
-First, run the development server:
+Next.js (App Router) + TypeScript + Tailwind, statically generated, with a local ingest
+pipeline that does the image work up front so the site itself stays simple and fast.
+
+## Quick start
 
 ```bash
-npm run dev
-# or
+yarn install
+cp .env.example .env.local
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Scripts
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Script | What it does |
+| --- | --- |
+| `yarn dev` | Development server (Turbopack) |
+| `yarn build` | Production build |
+| `yarn lint` | ESLint, **zero warnings tolerated** |
+| `yarn typecheck` | Generates route types, then `tsc --noEmit` |
+| `yarn test` | Vitest, single run |
+| `yarn test:watch` | Vitest in watch mode |
+| `yarn verify` | lint + typecheck + test — the same gates CI runs |
+| `yarn ingest` | Process new photos (see below) |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## How images work, and why
 
-## Learn More
+The site never reads image files at build time. Instead:
 
-To learn more about Next.js, take a look at the following resources:
+1. You drop originals into `originals/` (gitignored — raw files never enter git history).
+2. `yarn ingest` reads EXIF, generates responsive AVIF/WebP derivatives plus a tiny inline
+   blur placeholder, uploads the derivatives to Cloudflare R2, and writes
+   `content/photos.json`.
+3. The site builds purely from that committed JSON.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Why this shape.** Two requirements pull against each other: EXIF has to be extracted
+automatically from the file, but the files themselves need to live on a CDN rather than in
+the repo. Doing the extraction once, locally, and committing only the *result* satisfies
+both — the repo stays small, the build is hermetic and fast, and photo metadata is
+version-controlled and reviewable in diffs.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**No `next/image`.** The pipeline already produced optimized derivatives at fixed widths,
+so pages use plain `<img>` with a hand-built `srcset`. Running those through `next/image`
+would re-optimize already-optimized files, require `remotePatterns` config, and bill for
+the privilege. Intrinsic `width`/`height` come from `photos.json`, which is what actually
+prevents layout shift.
 
-## Deploy on Vercel
+Before R2 exists, `yarn ingest --local` writes derivatives to `public/images/` instead, so
+the whole site runs end-to-end with no credentials.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Quality gates
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Strict TypeScript (`strict` plus `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`
+and friends), type-aware ESLint, and Vitest. Two rules are enforced mechanically rather
+than by convention:
+
+- **`--max-warnings 0`** — a warning is an unfixed problem, so it fails the build.
+- **`noInlineConfig: true`** — `eslint-disable` comments are ignored by ESLint entirely, so
+  adding one silences nothing. `@ts-ignore` is separately banned. When a library hands back
+  loosely-typed data, the fix is to parse it into a real type (Zod), not to suppress.
+
+Enforced locally by husky: `pre-commit` runs lint-staged + typecheck + tests, `pre-push`
+runs the full `yarn verify` and a build. CI re-runs all of it on every PR.
+
+## Setup still required
+
+| Item | Where |
+| --- | --- |
+| Cloudflare R2 bucket + API token | Cloudflare dashboard → R2 |
+| R2 custom domain for images | Avoids the rate-limited `r2.dev` URL |
+| `.env.local` | Copy from `.env.example` |
+| Vercel project + env vars | `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_IMAGE_BASE_URL` |
+| DNS `CNAME` for `photography` | Points the subdomain at Vercel |
+| Google Search Console | Submit the sitemap |
+| Real bio, gear, socials | `src/site.config.ts` (marked `TODO`) |
+
+## Notes
+
+`AGENTS.md` is generated and re-added by `next dev`; it points AI agents at the
+version-matched Next.js docs bundled in `node_modules/next/dist/docs/`.
+
+Node 22.20.0 is below the engine floor of the newest `jsdom` and `lint-staged`, so both are
+pinned a major behind. Bumping to Node ≥ 22.22 lets those pins be dropped.
