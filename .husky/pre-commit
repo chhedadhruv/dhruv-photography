@@ -1,9 +1,13 @@
-# Formats staged files with Prettier (re-staged automatically), then blocks the commit
-# unless ESLint is clean. `--max-warnings 0` is the point: a warning is a problem you have
-# not fixed yet, not a note to read later.
+# Formats staged files with Prettier and re-stages them, so nothing unformatted can land.
 yarn lint-staged
 
-# Types and tests are whole-project properties -- a staged file can be individually clean
-# while having broken something it imports, so these run across everything.
+# Lint, types and tests are whole-project properties, so all three run across everything
+# rather than only over the staged files. A staged change can be clean in isolation and
+# still break the file that imports it -- and a commit that touches only markdown would
+# otherwise skip ESLint entirely.
+#
+# `--max-warnings 0` is the point of the lint step: a warning is a problem you have not
+# fixed yet, not a note to read later.
+yarn lint
 yarn typecheck
 yarn test
