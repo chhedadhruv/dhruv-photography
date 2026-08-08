@@ -2,10 +2,18 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { JsonLd } from "@/components/JsonLd";
 import { PhotoImage } from "@/components/PhotoImage";
 import { formatPostDate } from "@/lib/format";
 import { getAllPosts, getPostBySlug } from "@/lib/journal";
+import {
+  articleJsonLd,
+  breadcrumbJsonLd,
+  graph,
+  personJsonLd,
+} from "@/lib/jsonld";
 import { getPhotoBySlug } from "@/lib/photos";
+import { absoluteImageUrl } from "@/lib/seo";
 
 export function generateStaticParams(): { slug: string }[] {
   return getAllPosts().map((post) => ({ slug: post.slug }));
@@ -21,17 +29,27 @@ export async function generateMetadata(
     return {};
   }
 
+  const cover =
+    post.coverPhotoSlug === undefined
+      ? undefined
+      : getPhotoBySlug(post.coverPhotoSlug);
+  const images = cover === undefined ? [] : [absoluteImageUrl(cover)];
+
   return {
     title: post.title,
     description: post.description,
     alternates: { canonical: `/journal/${post.slug}` },
+    // Drafts stay out of the index even when someone has the URL.
+    ...(post.draft ? { robots: { index: false, follow: false } } : {}),
     openGraph: {
       title: post.title,
       description: post.description,
       type: "article",
       publishedTime: post.publishedAt,
       tags: [...post.tags],
+      images,
     },
+    twitter: { card: "summary_large_image", images },
   };
 }
 
@@ -52,6 +70,17 @@ export default async function JournalPostPage(
 
   return (
     <article className="mx-auto max-w-[100rem] px-6 pt-10 md:px-10 md:pt-16">
+      <JsonLd
+        data={graph([
+          articleJsonLd(post, cover),
+          personJsonLd(),
+          breadcrumbJsonLd([
+            { name: "Journal", path: "/journal" },
+            { name: post.title, path: `/journal/${post.slug}` },
+          ]),
+        ])}
+      />
+
       <header className="mx-auto max-w-3xl">
         <div className="flex flex-wrap items-baseline gap-x-4">
           <span className="rebate text-selenium">
