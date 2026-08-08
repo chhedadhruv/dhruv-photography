@@ -37,7 +37,9 @@ yarn-error.log*
 
 # Raw camera files. These are the inputs to `yarn ingest`, never site content -- keeping
 # them out of git is the whole reason the pipeline uploads derivatives to R2 instead.
-/originals/
+# The directory itself is tracked so a fresh clone has somewhere to drop files.
+/originals/*
+!/originals/.gitkeep
 
 # Derivatives written by `yarn ingest --local`. Regenerable, and large.
 /public/images/

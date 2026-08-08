@@ -29,6 +29,9 @@ jobs:
 
       # Deliberately separate steps: a failure names itself in the GitHub UI instead of
       # collapsing into one opaque "check failed".
+      - name: Format check
+        run: yarn format:check
+
       - name: Lint
         run: yarn lint
 
