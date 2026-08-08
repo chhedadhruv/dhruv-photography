@@ -38,6 +38,7 @@ When you add your own work, delete `originals/*.jpg` and the sample entries in
 | `yarn verify`       | format + lint + typecheck + test — the same gates CI runs |
 | `yarn ingest`       | Process new photos (see below)                            |
 | `yarn seed:samples` | Regenerate the placeholder sample originals               |
+| `yarn icons`        | Regenerate the favicon, touch icon and social card        |
 
 ## How images work, and why
 
@@ -180,6 +181,11 @@ components. They target the places where a mistake would otherwise be invisible:
 The suite was checked by breaking things on purpose: removing the Escape handler and the
 angle-bracket escaping each produced failures. A green test that cannot go red is
 decoration.
+
+## Deployment
+
+See **[DEPLOYMENT.md](DEPLOYMENT.md)** for the full first-time setup: Cloudflare R2, the
+image domain, Vercel, DNS, and Search Console.
 
 ## Setup still required
 

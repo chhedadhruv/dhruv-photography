@@ -14,6 +14,19 @@ export const metadata: Metadata = {
     title: `${siteConfig.author.name} — Photographer`,
     description: siteConfig.author.bio,
     type: "profile",
+    // Declaring an `openGraph` object without `images` suppresses the file-based
+    // `opengraph-image.png` default -- so this page silently had no social card at all
+    // until it was named explicitly. Every other static page omits `openGraph` entirely
+    // and inherits the default automatically, including its alt text and dimensions,
+    // which is why those are spelled out again here.
+    images: [
+      {
+        url: "/opengraph-image.png",
+        width: 1200,
+        height: 630,
+        alt: 'A six-blade camera aperture beside the words "Dhruv Chheda — Photography"',
+      },
+    ],
   },
 };
 
