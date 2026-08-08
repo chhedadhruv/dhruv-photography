@@ -1,0 +1,8 @@
+# Blocks the commit unless every staged file is clean. `--max-warnings 0` is the point:
+# a warning is a problem you have not fixed yet, not a note to read later.
+yarn lint-staged
+
+# Types and tests are whole-project properties -- a staged file can be individually clean
+# while having broken something it imports, so these run across everything.
+yarn typecheck
+yarn test

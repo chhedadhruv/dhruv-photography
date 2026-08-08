@@ -32,6 +32,15 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+# ...but the documented template is the one env file that must be committed.
+!.env.example
+
+# Raw camera files. These are the inputs to `yarn ingest`, never site content -- keeping
+# them out of git is the whole reason the pipeline uploads derivatives to R2 instead.
+/originals/
+
+# Derivatives written by `yarn ingest --local`. Regenerable, and large.
+/public/images/
 
 # vercel
 .vercel
