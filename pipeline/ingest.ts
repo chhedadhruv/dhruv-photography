@@ -220,10 +220,26 @@ async function main(): Promise<void> {
 
     // Re-encoding an unchanged photo is slow and produces no different bytes, so already
     // ingested files are skipped unless --force asks for a rebuild.
+    //
+    // "Already ingested" has to mean the derivatives are actually there, not merely that
+    // photos.json mentions the photo. photos.json is committed and derivatives are not, so
+    // on a fresh clone every entry exists and no image does; checking only the entry would
+    // skip the whole library and leave every frame broken.
     if (existing !== undefined && !values.force) {
-      console.log(`  skip  ${filename} (already ingested; --force to redo)`);
-      photos.push(existing);
-      continue;
+      const widest = Math.max(...existing.derivativeWidths);
+      const present = await storage.exists(
+        derivativeKey(existing.slug, widest, "webp"),
+      );
+
+      if (present) {
+        console.log(`  skip  ${filename} (already ingested; --force to redo)`);
+        photos.push(existing);
+        continue;
+      }
+
+      console.log(
+        `  redo  ${filename} (entry exists but derivatives are missing)`,
+      );
     }
 
     process.stdout.write(`  ...   ${filename}`);

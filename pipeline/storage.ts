@@ -1,7 +1,11 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import {
+  HeadObjectCommand,
+  PutObjectCommand,
+  S3Client,
+} from "@aws-sdk/client-s3";
 
 import type { ImageFormat } from "@/lib/images";
 
@@ -17,6 +21,16 @@ import type { ImageFormat } from "@/lib/images";
 export interface Storage {
   readonly describe: string;
   put(key: string, body: Buffer, format: ImageFormat): Promise<void>;
+  /**
+   * Whether a derivative is already present.
+   *
+   * Needed because "have I ingested this photo before?" and "do its derivatives exist?"
+   * are different questions. `content/photos.json` is committed while derivatives are
+   * not, so on a fresh clone every photo looks ingested and none of the images exist --
+   * without this check the pipeline would skip everything and leave a site full of broken
+   * frames.
+   */
+  exists(key: string): Promise<boolean>;
 }
 
 const CONTENT_TYPES: Record<ImageFormat, string> = {
@@ -33,6 +47,14 @@ export function createLocalStorage(): Storage {
       const destination = path.join(LOCAL_IMAGE_DIR, key);
       await fs.mkdir(path.dirname(destination), { recursive: true });
       await fs.writeFile(destination, body);
+    },
+    async exists(key) {
+      try {
+        await fs.access(path.join(LOCAL_IMAGE_DIR, key));
+        return true;
+      } catch {
+        return false;
+      }
     },
   };
 }
@@ -77,6 +99,17 @@ export function createR2Storage(): Storage {
           CacheControl: "public, max-age=31536000, immutable",
         }),
       );
+    },
+    async exists(key) {
+      try {
+        await client.send(new HeadObjectCommand({ Bucket: bucket, Key: key }));
+        return true;
+      } catch {
+        // HeadObject rejects for a missing key, and also for a network or auth problem.
+        // Treating both as "absent" only costs a re-upload, whereas treating a real
+        // absence as present would leave a permanently broken image.
+        return false;
+      }
     },
   };
 }

@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint --max-warnings 0",
+    "lint": "next typegen && eslint --max-warnings 0",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "next typegen && tsc --noEmit",
@@ -14,6 +14,7 @@
     "test:watch": "vitest",
     "verify": "yarn format:check && yarn lint && yarn typecheck && yarn test",
     "ingest": "tsx pipeline/ingest.ts",
+    "seed:samples": "tsx pipeline/seed-samples.ts",
     "prepare": "husky"
   },
   "lint-staged": {

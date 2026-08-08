@@ -119,8 +119,20 @@ export const collectionSchema = z.object({
 export const journalFrontmatterSchema = z.object({
   title: z.string().min(1),
   description: z.string().min(40, "posts need a real description for SEO"),
-  /** Date only -- posts are not precise to the second. */
-  publishedAt: z.iso.date(),
+  /**
+   * Date only -- posts are not precise to the second.
+   *
+   * Accepts a `Date` as well as a string because YAML silently parses an unquoted
+   * `2025-02-10` into a Date object, so frontmatter almost never arrives as the string it
+   * looks like. Requiring quotes would work until the first time it was forgotten; the
+   * schema absorbing it is the fix that stays fixed. The Date is read back in UTC to
+   * avoid slipping a day.
+   */
+  publishedAt: z
+    .union([z.iso.date(), z.date()])
+    .transform((value) =>
+      typeof value === "string" ? value : value.toISOString().slice(0, 10),
+    ),
   tags: z.array(z.string().min(1)),
   /** Optional hero image, referenced by slug so it reuses an existing photo. */
   coverPhotoSlug: slugSchema.optional(),
