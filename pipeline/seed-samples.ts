@@ -39,11 +39,11 @@ const FRAMES: readonly SampleFrame[] = [
     to: "#c89a6a",
     exif: {
       DateTimeOriginal: "2025:01:15 06:12:00",
-      FNumber: "2.8",
+      FNumber: "5.6",
       ExposureTime: "0.004",
       ISOSpeedRatings: "200",
-      FocalLength: "23",
-      LensModel: "XF23mmF2 R WR",
+      FocalLength: "18",
+      LensModel: "RF-S18-45mm F4.5-6.3 IS STM",
     },
   },
   {
@@ -54,11 +54,11 @@ const FRAMES: readonly SampleFrame[] = [
     to: "#5a4632",
     exif: {
       DateTimeOriginal: "2025:02:03 20:41:00",
-      FNumber: "1.4",
+      FNumber: "6.3",
       ExposureTime: "0.02",
       ISOSpeedRatings: "3200",
       FocalLength: "35",
-      LensModel: "XF35mmF1.4 R",
+      LensModel: "RF-S18-45mm F4.5-6.3 IS STM",
     },
   },
   {
@@ -72,8 +72,8 @@ const FRAMES: readonly SampleFrame[] = [
       FNumber: "8",
       ExposureTime: "0.008",
       ISOSpeedRatings: "160",
-      FocalLength: "55",
-      LensModel: "XF55-200mmF3.5-4.8 R LM OIS",
+      FocalLength: "45",
+      LensModel: "RF-S18-45mm F4.5-6.3 IS STM",
     },
   },
 ];
@@ -99,7 +99,7 @@ async function main(): Promise<void> {
   for (const frame of FRAMES) {
     await sharp(gradientSvg(frame))
       .withExif({
-        IFD0: { Make: "FUJIFILM", Model: "X-T30" },
+        IFD0: { Make: "Canon", Model: "Canon EOS R50" },
         IFD2: frame.exif,
       })
       .jpeg({ quality: 92 })

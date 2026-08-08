@@ -40,31 +40,33 @@ export const siteConfig = {
 
   author: {
     name: "Dhruv Chheda",
-    // TODO(dhruv): your real bio. This is also the text most likely to rank for your name.
-    bio: "I'm a software developer and hobbyist photographer. I shoot mostly while travelling — cities at street level, landscapes when I can get out of them, and the people I meet along the way.",
+    // TODO(dhruv): this is my draft from what you've told me — rewrite it in your own
+    // words. It is the text most likely to rank for your name, and the only page on the
+    // site where a stranger learns who took the photographs.
+    bio: "I'm a software developer and a hobbyist photographer. I shoot mostly while travelling — cities at street level, landscapes when I can get out of them, and the people I meet along the way. One body, one kit lens, and whatever light is going.",
     /** Where the `Person` structured data points as your canonical home. */
     homepage: "https://dhruvchheda.com",
   },
 
-  // TODO(dhruv): real handles. These render in the footer and as `sameAs` in JSON-LD,
-  // which is how search engines connect this site to your other profiles.
+  // These render in the footer and as `sameAs` in JSON-LD, which is how search engines
+  // connect this site to the rest of your presence -- the main lever for ranking on your
+  // own name.
   socials: [
-    { label: "Instagram", href: "https://instagram.com/" },
-    { label: "GitHub", href: "https://github.com/" },
+    { label: "Instagram", href: "https://www.instagram.com/pixel.bydhruv/" },
+    { label: "GitHub", href: "https://github.com/chhedadhruv" },
     { label: "Main site", href: "https://dhruvchheda.com" },
   ] as const satisfies readonly SocialLink[],
 
-  // TODO(dhruv): your actual kit.
   gear: [
     {
       category: "Camera",
-      name: "Placeholder body",
-      note: "Replace with what you actually shoot.",
+      name: "Canon EOS R50",
+      note: "24MP APS-C mirrorless. Small enough that I actually carry it, which matters more than any spec on the list.",
     },
     {
       category: "Lens",
-      name: "Placeholder lens",
-      note: "Replace with what you actually shoot.",
+      name: "Canon RF-S 18-45mm f/4.5-6.3 IS STM",
+      note: "The kit zoom — 29-72mm equivalent on APS-C. Slow at the long end, so most of what you see here was shot in decent light or at a high ISO.",
     },
   ] as const satisfies readonly GearItem[],
 

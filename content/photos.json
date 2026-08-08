@@ -22,10 +22,10 @@
     ],
     "blurDataUrl": "data:image/webp;base64,UklGRk4AAABXRUJQVlA4IEIAAADwAwCdASoUAA0APu1kqU2ppaOiMAgBMB2JYgCdMoADSVPQ/0yJ3GQAAP7NXmHRT2Ov6KqXWg46MNbQRdIgwjWwAAA=",
     "exif": {
-      "camera": "FUJIFILM X-T30",
-      "lens": "XF23mmF2 R WR",
-      "focalLength": 23,
-      "aperture": 2.8,
+      "camera": "Canon EOS R50",
+      "lens": "RF-S18-45mm F4.5-6.3 IS STM",
+      "focalLength": 18,
+      "aperture": 5.6,
       "shutter": "1/250",
       "iso": 200
     }
@@ -35,7 +35,7 @@
     "sourceFile": "night-crossing.jpg",
     "title": "Night crossing",
     "alt": "A lone figure crossing a wet street at night, lit from behind by shopfronts",
-    "caption": "Shot wide open at 3200 because there was no other way. The grain is the picture.",
+    "caption": "Wide open is f/6.3 on this lens, so the only way to hold a shutter at all was ISO 3200. The grain is the picture.",
     "location": "Fort, Mumbai",
     "collections": [
       "after-dark"
@@ -53,10 +53,10 @@
     ],
     "blurDataUrl": "data:image/webp;base64,UklGRkYAAABXRUJQVlA4IDoAAAAQAwCdASoUABkAPu1mqk8zpa0iKA1ScB2JZwDDcBahPEwA/u627EhGgeZ5qf0aIu96ay4mtdYHHQAA",
     "exif": {
-      "camera": "FUJIFILM X-T30",
-      "lens": "XF35mmF1.4 R",
+      "camera": "Canon EOS R50",
+      "lens": "RF-S18-45mm F4.5-6.3 IS STM",
       "focalLength": 35,
-      "aperture": 1.4,
+      "aperture": 6.3,
       "shutter": "1/50",
       "iso": 3200
     }
@@ -84,9 +84,9 @@
     ],
     "blurDataUrl": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAABwAwCdASoUAAsAPu1kq04ppaQiMAgBMB2JZwCzgB6FyvjdYAAA/uQhqVhJXp3khmMO9dd0/rQAAA==",
     "exif": {
-      "camera": "FUJIFILM X-T30",
-      "lens": "XF55-200mmF3.5-4.8 R LM OIS",
-      "focalLength": 55,
+      "camera": "Canon EOS R50",
+      "lens": "RF-S18-45mm F4.5-6.3 IS STM",
+      "focalLength": 45,
       "aperture": 8,
       "shutter": "1/125",
       "iso": 160
