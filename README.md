@@ -181,6 +181,11 @@ The suite was checked by breaking things on purpose: removing the Escape handler
 angle-bracket escaping each produced failures. A green test that cannot go red is
 decoration.
 
+## Deployment
+
+See **[DEPLOYMENT.md](DEPLOYMENT.md)** for the full first-time setup: Cloudflare R2, the
+image domain, Vercel, DNS, and Search Console.
+
 ## Setup still required
 
 | Item                             | Where                                                |
