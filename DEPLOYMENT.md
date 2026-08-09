@@ -110,23 +110,14 @@ captions — the site will not build until you write them.
 Then edit `content/photos.json` for each new photo, and add collections in
 `content/collections.json`. The `add-photos` skill covers the standards.
 
-## 5. Replace the sample content
+## 5. Finish the site copy
 
-**Do this before going live.** The repo ships three synthetic gradient images so the site
-runs out of the box. They should not be on your portfolio.
+The sample content is gone — the three synthetic gradient images, the `coastline` and
+`after-dark` collections, the sample journal post, and the `seed-samples` script that
+generated the placeholders were all removed once the first real photographs went in. A
+fresh clone now has no images until you run `yarn ingest` against your own files.
 
-```bash
-rm originals/harbour-at-dawn.jpg originals/night-crossing.jpg originals/ridge-line.jpg
-```
-
-Then remove their entries from `content/photos.json`, remove the `coastline` and
-`after-dark` entries from `content/collections.json` (or repurpose them), and either
-rewrite or delete `content/journal/waiting-for-the-light.md`.
-
-You can also delete `pipeline/seed-samples.ts` and its `seed:samples` script once you have
-your own photographs in.
-
-Also finish the `TODO`s in `src/site.config.ts` — the bio especially. It is the text most
+Finish the `TODO`s in `src/site.config.ts` — the bio especially. It is the text most
 likely to rank for your name and the only place a stranger learns who took the pictures.
 
 Then:

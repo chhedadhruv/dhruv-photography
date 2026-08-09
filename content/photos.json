@@ -1,18 +1,18 @@
 [
   {
-    "slug": "harbour-at-dawn",
-    "sourceFile": "harbour-at-dawn.jpg",
-    "title": "Harbour at dawn",
-    "alt": "Fishing boats moored in a still harbour under a pale morning sky",
-    "caption": "The fleet comes back in before the light gets hard. Twenty minutes later the water is white and there is nothing left to photograph.",
-    "location": "Vasai, Maharashtra",
+    "slug": "oven-at-closing-time",
+    "sourceFile": "oven-at-closing-time.jpg",
+    "title": "The oven",
+    "alt": "A cook in white kitchen whites and a white cap stands at a tiled wood-fired oven with a fire burning inside it, stacked pizza boxes to his left.",
+    "caption": "Shot from across the room at f/6.3. The fire in the mouth of the oven is doing almost all of the work here — everything above the counter falls away into the dark, and the tiled dome only reads because it is white.",
+    "location": "Bengaluru, India",
     "collections": [
-      "coastline"
+      "the-pizza-bakery"
     ],
     "featured": true,
-    "capturedAt": "2025-01-15T06:12:00.000Z",
-    "width": 3000,
-    "height": 2000,
+    "capturedAt": "2026-04-16T21:49:35.000Z",
+    "width": 6000,
+    "height": 4000,
     "derivativeWidths": [
       400,
       800,
@@ -20,76 +20,107 @@
       1600,
       2400
     ],
-    "blurDataUrl": "data:image/webp;base64,UklGRk4AAABXRUJQVlA4IEIAAADwAwCdASoUAA0APu1kqU2ppaOiMAgBMB2JYgCdMoADSVPQ/0yJ3GQAAP7NXmHRT2Ov6KqXWg46MNbQRdIgwjWwAAA=",
-    "exif": {
-      "camera": "Canon EOS R50",
-      "lens": "RF-S18-45mm F4.5-6.3 IS STM",
-      "focalLength": 18,
-      "aperture": 5.6,
-      "shutter": "1/250",
-      "iso": 200
-    }
-  },
-  {
-    "slug": "night-crossing",
-    "sourceFile": "night-crossing.jpg",
-    "title": "Night crossing",
-    "alt": "A lone figure crossing a wet street at night, lit from behind by shopfronts",
-    "caption": "Wide open is f/6.3 on this lens, so the only way to hold a shutter at all was ISO 3200. The grain is the picture.",
-    "location": "Fort, Mumbai",
-    "collections": [
-      "after-dark"
-    ],
-    "featured": false,
-    "capturedAt": "2025-02-03T20:41:00.000Z",
-    "width": 2400,
-    "height": 3000,
-    "derivativeWidths": [
-      400,
-      800,
-      1200,
-      1600,
-      2400
-    ],
-    "blurDataUrl": "data:image/webp;base64,UklGRkYAAABXRUJQVlA4IDoAAAAQAwCdASoUABkAPu1mqk8zpa0iKA1ScB2JZwDDcBahPEwA/u627EhGgeZ5qf0aIu96ay4mtdYHHQAA",
-    "exif": {
-      "camera": "Canon EOS R50",
-      "lens": "RF-S18-45mm F4.5-6.3 IS STM",
-      "focalLength": 35,
-      "aperture": 6.3,
-      "shutter": "1/50",
-      "iso": 3200
-    }
-  },
-  {
-    "slug": "ridge-line",
-    "sourceFile": "ridge-line.jpg",
-    "title": "Ridge line",
-    "alt": "A long ridge receding into layered haze in late afternoon light",
-    "caption": "Four hours up for fifteen minutes of separation between the ridges.",
-    "location": "Sahyadri, Maharashtra",
-    "collections": [
-      "coastline"
-    ],
-    "featured": false,
-    "capturedAt": "2024-11-22T16:58:00.000Z",
-    "width": 3000,
-    "height": 1700,
-    "derivativeWidths": [
-      400,
-      800,
-      1200,
-      1600,
-      2400
-    ],
-    "blurDataUrl": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAABwAwCdASoUAAsAPu1kq04ppaQiMAgBMB2JZwCzgB6FyvjdYAAA/uQhqVhJXp3khmMO9dd0/rQAAA==",
+    "blurDataUrl": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAADwAwCdASoUAA0APu1iqU2ppaQiMAgBMB2JZQCo9CHS2QRVoErRuZUAAP7ynfjH1Kvl3nPAaT9+EwytwedvslklGdvVXSGlB0VZCy/NVocw+EwnI5Mie2LKg4HyGm2yHjhL8AAA",
     "exif": {
       "camera": "Canon EOS R50",
       "lens": "RF-S18-45mm F4.5-6.3 IS STM",
       "focalLength": 45,
-      "aperture": 8,
-      "shutter": "1/125",
-      "iso": 160
+      "aperture": 6.3,
+      "shutter": "1/60",
+      "iso": 6400
+    }
+  },
+  {
+    "slug": "paper-umbrella",
+    "sourceFile": "paper-umbrella.jpg",
+    "title": "Paper umbrella",
+    "alt": "A black and white striped paper straw and a small red paper cocktail umbrella resting on the rim of a frosted glass, with the restaurant behind them thrown out of focus.",
+    "caption": "A paper umbrella is a small piece of theatre, and small pieces of theatre deserve portraits. Focus on the frost of the glass and let the rest of the restaurant dissolve behind it.",
+    "location": "Bengaluru, India",
+    "collections": [
+      "the-pizza-bakery"
+    ],
+    "featured": false,
+    "capturedAt": "2026-04-16T21:55:12.000Z",
+    "width": 6000,
+    "height": 4000,
+    "derivativeWidths": [
+      400,
+      800,
+      1200,
+      1600,
+      2400
+    ],
+    "blurDataUrl": "data:image/webp;base64,UklGRowAAABXRUJQVlA4IIAAAADwAwCdASoUAA0APu1iqU2ppaOiMAgBMB2JbACdAB9w9BuDCE+WJjMAAP6TpoqtpYAzPU3BifJzpzjYl5d8GBEr0ziUyAFcboyZof1/IatpoZ8xjyoA1ey5+Al6zG6/yf75FbIyL+XjiFaVEqJ0q79o0Lbvf88CtAAyHhMXVuAAAA==",
+    "exif": {
+      "camera": "Canon EOS R50",
+      "lens": "RF-S18-45mm F4.5-6.3 IS STM",
+      "focalLength": 31,
+      "aperture": 5.6,
+      "shutter": "1/25",
+      "iso": 6400
+    }
+  },
+  {
+    "slug": "penne-and-garlic-bread",
+    "sourceFile": "penne-and-garlic-bread.jpg",
+    "title": "Penne and garlic bread",
+    "alt": "Overhead view of penne in a white sauce with red pepper, olives and courgette, a slice of garlic bread beside it on a white plate, on a dark wood table.",
+    "caption": "Overhead, because it is the only angle from which a plate reads as a plate. The garlic bread negotiated its own corner of the frame.",
+    "location": "Bengaluru, India",
+    "collections": [
+      "the-pizza-bakery"
+    ],
+    "featured": false,
+    "capturedAt": "2026-04-16T21:51:58.000Z",
+    "width": 6000,
+    "height": 4000,
+    "derivativeWidths": [
+      400,
+      800,
+      1200,
+      1600,
+      2400
+    ],
+    "blurDataUrl": "data:image/webp;base64,UklGRn4AAABXRUJQVlA4IHIAAACwBACdASoUAA0APu1iqU2ppaQiMAgBMB2JYgCdMoRwACUHHMQ9QfRe8Q0DQiwAAP7w3w0addaJfhapmV4bHHMRO/9QVFZd/SOGGhjqpRH9ztmtsyfZMHK/+0Bm9N5ogMd5uc5lF3CrTDI7IeG/EDTgAAA=",
+    "exif": {
+      "camera": "Canon EOS R50",
+      "lens": "RF-S18-45mm F4.5-6.3 IS STM",
+      "focalLength": 31,
+      "aperture": 5.6,
+      "shutter": "1/25",
+      "iso": 6400
+    }
+  },
+  {
+    "slug": "pizza-from-above",
+    "sourceFile": "pizza-from-above.jpg",
+    "title": "Pizza from above",
+    "alt": "A whole pizza on a wooden board seen from above, topped with red pepper, jalapenos, red onion and torn mozzarella, with a drink and its paper umbrella at the edge of the frame.",
+    "caption": "Two frames of the same table, six minutes apart. The drink is still in the corner, still wearing its paper umbrella, still declining to get out of the way.",
+    "location": "Bengaluru, India",
+    "collections": [
+      "the-pizza-bakery"
+    ],
+    "featured": false,
+    "capturedAt": "2026-04-16T22:01:23.000Z",
+    "width": 6000,
+    "height": 4000,
+    "derivativeWidths": [
+      400,
+      800,
+      1200,
+      1600,
+      2400
+    ],
+    "blurDataUrl": "data:image/webp;base64,UklGRogAAABXRUJQVlA4IHwAAAAQBACdASoUAA0APu1iqU2ppaOiMAgBMB2JZgCdMoR3ACBKiaL+uN3dGAD+5NK7jxHsVxAlq7HTQJ7XvjkETOb81zR9xTUAcxXB4sN3SPN5JnTonMxpFx+sVMdwgNwr1XRgdRlm6RoRMw78eEt2A1EZqsmsAen3wnKaegAA",
+    "exif": {
+      "camera": "Canon EOS R50",
+      "lens": "RF-S18-45mm F4.5-6.3 IS STM",
+      "focalLength": 30,
+      "aperture": 5,
+      "shutter": "1/30",
+      "iso": 6400
     }
   }
 ]

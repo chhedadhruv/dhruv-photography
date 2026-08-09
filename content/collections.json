@@ -1,18 +1,10 @@
 [
   {
-    "slug": "coastline",
-    "title": "Coastline",
-    "description": "Mornings and evenings along the Maharashtra coast, mostly at the edges of the day when the light is still doing something.",
-    "location": "Maharashtra, India",
-    "coverPhotoSlug": "harbour-at-dawn",
+    "slug": "the-pizza-bakery",
+    "title": "The Pizza Bakery",
+    "description": "Four frames from one table at a wood-fired pizza place in Bengaluru — the oven at the back of the room, the food, and whatever the light would give at ISO 6400.",
+    "location": "Bengaluru, India",
+    "coverPhotoSlug": "oven-at-closing-time",
     "order": 0
-  },
-  {
-    "slug": "after-dark",
-    "title": "After Dark",
-    "description": "Street photography once the sun has gone: shopfronts, wet tarmac, and whatever the available light will give.",
-    "location": "Mumbai, India",
-    "coverPhotoSlug": "night-crossing",
-    "order": 1
   }
 ]
