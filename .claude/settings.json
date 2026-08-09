@@ -11,7 +11,6 @@
       "Read(./**/*.pem)",
       "Read(./**/*.key)",
       "Read(./**/id_rsa*)",
-      "Read(./originals/**)",
       "Read(./public/images/**)",
       "Edit(./public/images/**)"
     ]
