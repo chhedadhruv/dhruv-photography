@@ -34,6 +34,27 @@ yarn build
 `check` is a yarn 1 builtin that shadows package scripts and exits 0 without running
 anything.
 
+### Checking pages in `yarn dev`
+
+The dev server compiles routes on first request. A `curl` fired a few seconds after
+startup returns before the route exists, so `grep` finds nothing and you conclude the
+change did not work. It did.
+
+Request each URL once to warm it, then check:
+
+```bash
+for u in /photos/some-slug /collections/some-slug; do curl -s localhost:3000$u > /dev/null; done
+curl -s localhost:3000/photos/some-slug | grep -c 'expected text'
+```
+
+Two other things dev will lie to you about, both by design:
+
+- **Drafts render in dev and are excluded from production.** To check what actually
+  ships, grep the build output — `.next/server/app/sitemap.xml.body` — not the dev server.
+- **Client-injected scripts are absent from the served HTML.** Components that mount and
+  then inject (analytics, for instance) will never appear in `curl` output. Look in
+  `.next/static/chunks/` instead.
+
 ### Fix, never suppress
 
 `eslint-disable` is inert here (`noInlineConfig: true`), `@ts-ignore` is banned, and `any`
@@ -80,3 +101,32 @@ Suggest a PR title matching the commit subject. The PR template populates automa
 
 CI must pass before anything merges. Do not merge on their behalf. Wait for them to
 confirm the merge, then sync `main` before starting the next branch.
+
+## 7. After a content merge, check production
+
+Vercel deploys `main` automatically, but the deploy only ships HTML — the images went to
+R2 from a laptop, separately. The two can disagree, and the failure is silent: a page
+that renders perfectly with every frame 404ing.
+
+```bash
+curl -s https://photography.dhruvchheda.com/ | grep -o 'src="[^"]*photos[^"]*"' | sort -u
+curl -s -o /dev/null -w '%{http_code}\n' https://images.dhruvchheda.com/photos/<slug>/2400.webp
+```
+
+This is not hypothetical. The site was live for some time serving three sample entries
+whose derivatives had only ever been ingested with `--local`, so every photograph on the
+production home page was a 404 and nothing in the build, the tests or CI could have
+caught it.
+
+To see what is actually in the bucket:
+
+```bash
+node -e "
+require('dotenv').config({path:'.env.local'});
+const {S3Client,ListObjectsV2Command}=require('@aws-sdk/client-s3');
+const c=new S3Client({region:'auto',endpoint:\`https://\${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com\`,credentials:{accessKeyId:process.env.R2_ACCESS_KEY_ID,secretAccessKey:process.env.R2_SECRET_ACCESS_KEY}});
+c.send(new ListObjectsV2Command({Bucket:process.env.R2_BUCKET})).then(r=>console.log((r.Contents||[]).map(o=>o.Key).join('\n')));
+"
+```
+
+Then resubmit `sitemap.xml` in Search Console if URLs were added or removed.

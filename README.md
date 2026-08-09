@@ -66,11 +66,26 @@ the whole site runs end-to-end with no credentials.
 
 ```bash
 cp ~/exports/*.jpg originals/
-yarn ingest              # or: yarn ingest --local
+# rename them to readable names FIRST -- the filename becomes the permanent slug
+yarn ingest              # uploads to R2
+yarn ingest --local      # also generate derivatives for local dev
 ```
+
+The filename becomes the slug, which becomes the URL and the R2 key. `IMG_0238.JPG`
+publishes as `/photos/img-0238` and stays that way; renaming later means `--force` and
+orphaned keys in the bucket.
+
+Run ingest **twice** while `NEXT_PUBLIC_IMAGE_BASE_URL` is `/images`. The R2 run is what
+production reads; the `--local` run is what stops every frame 404ing in `yarn dev`.
 
 Then open `content/photos.json` and fill in `alt`, `caption`, `location`, and
 `collections` for each new photo. Ingest tells you exactly which ones are waiting.
+
+If Claude Code is doing this, the `add-photos` skill has the standards. It reads the
+image files directly, so titles and alt text come from the frame itself — but captions
+are proposed as options for you to choose from, and locations always come from you. It
+cannot know where a photograph was taken or what was on the plate, and it is told not to
+guess.
 
 | Flag      | Effect                                                           |
 | --------- | ---------------------------------------------------------------- |
