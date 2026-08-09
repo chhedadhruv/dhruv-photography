@@ -10,18 +10,16 @@ pipeline that does the image work up front so the site itself stays simple and f
 ```bash
 yarn install
 cp .env.example .env.local
-yarn seed:samples      # generate the placeholder originals the sample content refers to
+cp ~/wherever/your-exports/*.jpg originals/
 yarn ingest --local    # process them into public/images/
 yarn dev
 ```
 
-The repo ships with three synthetic sample photographs, two collections and one journal
-post, so the site runs end to end with no Cloudflare account and no photographs of your
-own. `originals/` and `public/images/` are gitignored — binaries do not belong in git — so
-`yarn seed:samples` regenerates the inputs, and ingest produces the derivatives from them.
-
-When you add your own work, delete `originals/*.jpg` and the sample entries in
-`content/photos.json`.
+`originals/` and `public/images/` are gitignored — binaries do not belong in git — but
+`content/photos.json` is committed. So a fresh clone knows about every photograph and has
+the pixels for none of them: run `yarn ingest --local` against the originals to rebuild
+the derivatives locally, or point `NEXT_PUBLIC_IMAGE_BASE_URL` at R2 and let the published
+ones serve.
 
 ## Scripts
 
@@ -37,7 +35,6 @@ When you add your own work, delete `originals/*.jpg` and the sample entries in
 | `yarn test:watch`   | Vitest in watch mode                                      |
 | `yarn verify`       | format + lint + typecheck + test — the same gates CI runs |
 | `yarn ingest`       | Process new photos (see below)                            |
-| `yarn seed:samples` | Regenerate the placeholder sample originals               |
 | `yarn icons`        | Regenerate the favicon, touch icon and social card        |
 
 ## How images work, and why
