@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Archivo, IBM_Plex_Mono, Newsreader } from "next/font/google";
 
@@ -52,6 +53,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <SiteHeader />
         <main className="flex-1">{children}</main>
         <SiteFooter />
+        {/*
+          Page views and visitors, cookieless and without a consent banner. It injects a
+          script only when running on Vercel, so local `yarn dev` and `yarn build` are
+          unaffected and no request goes out in development.
+        */}
+        <Analytics />
       </body>
     </html>
   );
